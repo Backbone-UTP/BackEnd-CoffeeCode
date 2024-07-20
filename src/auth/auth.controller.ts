@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpException,
   HttpStatus,
@@ -57,7 +58,7 @@ export class AuthController {
     @Body() accessData: AuthDTO,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const { access_token, refresh_token } = await this.authService
+    const { access_token, refresh_token, user } = await this.authService
       .signIn(accessData)
       .catch((e) => {
         throw new HttpException(e.message, e.status);
@@ -74,7 +75,7 @@ export class AuthController {
         secure: false,
         expires: new Date(Date.now() + Number(EXP_TIME_REFRESH_TOKEN_MS)),
       })
-      .send({ status: 'ok' });
+      .send({ user });
   }
 
   @Public()
@@ -101,5 +102,21 @@ export class AuthController {
         expires: new Date(Date.now() + Number(EXP_TIME_ACCESS_TOKEN_MS)),
       })
       .send({ status: 'ok' });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  async logout(@Res() response: Response) {
+    response
+      .clearCookie('access_token')
+      .clearCookie('refresh_token')
+      .send({ status: 'logout succesfully' });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('profile')
+  profile(@Req() request: any) {
+    const user = request.user;
+    return { user };
   }
 }

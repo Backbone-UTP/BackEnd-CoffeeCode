@@ -58,7 +58,7 @@ export class AuthService {
 
   async signIn(
     accessData: AuthDTO,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+  ): Promise<{ access_token: string; refresh_token: string; user: any }> {
     const user = await this.prisma.user
       .findFirstOrThrow({
         where: {
@@ -91,6 +91,7 @@ export class AuthService {
           expiresIn: EXP_TIME_REFRESH_TOKEN,
         },
       ),
+      user: userWithoutPassword,
     };
   }
 

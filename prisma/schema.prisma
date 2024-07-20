@@ -21,3 +21,10 @@ model user {
   password   String
   created_at DateTime @default(now()) @db.Timestamp(6)
 }
+
+model problems {
+  idProblem   String   @id() @default(uuid())
+  title       String
+  description String
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+}

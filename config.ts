@@ -6,4 +6,5 @@ export const {
   SECRET_REFRESH_TOKEN = 'secret2',
   EXP_TIME_REFRESH_TOKEN = '7d',
   EXP_TIME_REFRESH_TOKEN_MS = 604800000,
+  FRONT_END_URL = 'http://localhost:8080',
 } = process.env;

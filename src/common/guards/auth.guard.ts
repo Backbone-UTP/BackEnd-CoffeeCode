@@ -16,6 +16,8 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log(context.switchToHttp().getRequest().cookies);
+
     const isPublic = this.reflector.getAllAndOverride<boolean>(
       env.IS_PUBLIC_KEY,
       [context.getHandler(), context.getClass()],
